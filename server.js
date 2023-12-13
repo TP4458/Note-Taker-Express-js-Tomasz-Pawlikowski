@@ -31,8 +31,15 @@ app.post("/api/notes", (req, res) => {
         id: uniqid()
     }
     dbRead.push(note);
-    fs.writeFileSync("db/db.json", JSON.stringify(note))
-    res.json(note)
+    fs.writeFileSync("db/db.json", JSON.stringify(dbRead))
+    res.json(dbRead)
+})
+
+app.delete("/api/notes/:id", (req, res) => {
+    let db = JSON.parse(fs.readFileSync("db/db.json"))
+    let delNote = db.filter(item => item.id !== req.params.id);
+    fs.writeFileSync("db/db.json", JSON.stringify(delNote));
+    res.json(delNote);
 })
 
 
