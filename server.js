@@ -18,6 +18,22 @@ app.get("/api/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "db/db.json"))
 });
 
+app.post("/api/notes", (req, res) => {
+    //read json
+    let dbRead = fs.readFileSync("./db/db.json")
+    //parse json
+    dbRead  = JSON.parse(dbRead)
+    //send json to client
+    res.json(dbRead);
+    let note = {
+        title: req.body.title,
+        text: req.body.text,
+        id: uniqid()
+    }
+    dbRead.push(note);
+    fs.writeFileSync("db/db.json", JSON.stringify(note))
+    res.json(note)
+})
 
 
 
